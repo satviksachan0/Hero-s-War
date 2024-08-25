@@ -1,73 +1,123 @@
 let selectedPiece = null;
+let currentBoard = [];
+let currentPlayer = null;
 
 const ws = new WebSocket('ws://localhost:8080');
 
-// ws.onopen = () => {
-//     console.log('Connected to server');
-//     ws.send(JSON.stringify({ type: 'join' }));
-// };
-
-ws.addEventListener("open", (event) => {
+ws.addEventListener('open', () => {
     ws.send(JSON.stringify({ type: 'join' }));
-    console.log("connected to server");
-  });
+    console.log('Connected to server');
+});
 
-ws.onmessage = (message) => {
+ws.addEventListener('message', (message) => {
     const data = JSON.parse(message.data);
 
-    if (data.type === 'join') {
-        document.getElementById('game-status').innerText = `You are Player ${data.player}`;
-    } else if (data.type === 'message') {
-        document.getElementById('game-status').innerText = data.text;
-    } else if (data.type === 'start' || data.type === 'update') {
-        renderBoard(data.board, data.currentPlayer);
-        document.getElementById('game-status').innerText = `Player ${data.currentPlayer}'s turn`;
-    } else if (data.type === 'invalid') {
-        alert(data.reason);
-    } else if (data.type === 'gameOver') {
-        alert(`Game Over! ${data.winner} wins!`);
+    switch (data.type) {
+        case 'join':
+            handleJoin(data.player);
+            break;
+        case 'message':
+            updateStatus(data.text);
+            break;
+        case 'start':
+        case 'update':
+            updateGame(data.board, data.currentPlayer);
+            break;
+        case 'invalid':
+            alert(data.reason);
+            break;
+        case 'gameOver':
+            alert(`Game Over! ${data.winner} wins!`);
+            break;
     }
-};
+});
 
-function renderBoard(board, currentPlayer) {
+function handleJoin(player) {
+    updateStatus(`You are Player ${player}`);
+}
+
+function updateGame(board, player) {
+    currentBoard = board;
+    currentPlayer = player;
+    updateStatus(`Player ${player}'s turn`);
+    renderBoard(board, player);
+}
+
+function updateStatus(status) {
+    document.getElementById('game-status').innerText = status;
+}
+
+function renderBoard(board, player) {
     const boardElement = document.getElementById('game-board');
     boardElement.innerHTML = '';
 
     board.forEach((row, y) => {
         row.forEach((cell, x) => {
-            const cellElement = document.createElement('div');
-            cellElement.classList.add('cell');
-
-            if (cell) { // Check if there's a piece in this cell
-                cellElement.classList.add(`player${cell.player}`);
-                cellElement.innerText = cell.piece;
-
-                // Allow selection of pieces only if it's the current player's turn
-                if (cell.player === currentPlayer) {
-                    cellElement.addEventListener('click', () => {
-                        selectPiece(x, y);
-                    });
-                }
-            }
-
+            const cellElement = createCellElement(cell, x, y, player);
             boardElement.appendChild(cellElement);
+        });
+    });
 
-            // Highlight possible moves for selected piece
-            if (selectedPiece && !cell) {
+    // Highlight possible moves if a piece is selected
+    if (selectedPiece) {
+        highlightPossibleMoves(board, selectedPiece, player);
+    }
+}
+
+// function createCellElement(cell, x, y, player) {
+//     const cellElement = document.createElement('div');
+//     cellElement.classList.add('cell');
+
+//     if (cell) {
+//         cellElement.classList.add(`player${cell.player}`);
+//         cellElement.innerText = cell.piece;
+
+//         if (cell.player === player) {
+//             cellElement.addEventListener('click', () => {
+//                 selectPiece(x, y);
+//             });
+//         }
+//     }
+
+//     return cellElement;
+// }
+function createCellElement(cell, x, y, player) {
+    const cellElement = document.createElement('div');
+    cellElement.classList.add('cell');
+
+    if (cell) {
+        cellElement.classList.add(`player${cell.player}`);
+        cellElement.innerText = cell.piece.type;  // Extract the piece name directly
+        // console.log(cell.piece);
+        if (cell.player === player) {
+            cellElement.addEventListener('click', () => {
+                selectPiece(x, y);
+            });
+        }
+    }
+
+    return cellElement;
+}
+
+
+function highlightPossibleMoves(board, from, player) {
+    board.forEach((row, y) => {
+        row.forEach((cell, x) => {
+            if (!cell) {
+                const cellElement = document.querySelector(`#game-board .cell:nth-child(${y * 5 + x + 1})`);
                 cellElement.classList.add('highlight');
                 cellElement.addEventListener('click', () => {
-                    movePiece(selectedPiece, { x, y });
+                    movePiece(from, { x, y });
                 });
             }
         });
     });
 }
 
-
 function selectPiece(x, y) {
     selectedPiece = { x, y };
-    document.getElementById('game-status').innerText = `Selected piece at (${x + 1}, ${y + 1})`;
-    renderBoard(currentBoard, currentPlayer);  // Update the board to show possible moves
+    updateStatus(`Selected piece at (${x + 1}, ${y + 1})`);
+    renderBoard(currentBoard, currentPlayer);
 }
 
 function movePiece(from, to) {
@@ -78,21 +128,3 @@ function movePiece(from, to) {
     }));
     selectedPiece = null;  // Clear selection after the move
 }
-
-// Variables to track the current state
-let currentBoard = [];
-let currentPlayer = null;
-
-// Save the board and current player state on each update
-ws.onmessage = (message) => {
-    const data = JSON.parse(message.data);
-
-    if (data.type === 'update' || data.type === 'start') {
-        currentBoard = data.board;
-        currentPlayer = data.currentPlayer;
-        renderBoard(currentBoard, currentPlayer);
-    }
-
-    // Handle other message types
-    // ...
-};
