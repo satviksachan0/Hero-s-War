@@ -11,6 +11,11 @@
     Welcome to the <b>Chess-like Game</b>, a web-based, turn-based strategy game inspired by chess. The game is designed to be played by two players on a 5x5 grid. Each player commands a set of pieces with unique movement abilities. The objective is to outmaneuver and capture your opponent's pieces until one player remains victorious.
 </p>
 
+<!-- Important Note -->
+<p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #e74c3c; font-weight: 500; line-height: 1.8; margin: 20px 50px;">
+    <b>Note:</b> To play the game, ensure that you open two browser tabs or windows. Each tab will represent a different player in the game. Both tabs need to be connected to the game server simultaneously for the game to function correctly.
+</p>
+
 <!-- Game Features -->
 <h2 style="font-family: 'Montserrat', sans-serif; color: #3498db; font-weight: 700; margin-top: 40px; margin-left: 50px;">
     🎮 Game Features
@@ -47,10 +52,10 @@ npm install
     </li>
     <li>Start the server:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
-node server.js
+npm start
         </pre>
     </li>
-    <li>Open your web browser and navigate to <a href="http://localhost:8080" style="color: #1abc9c;">http://localhost:8080</a> to start playing!</li>
+    <li>Open your web browser and navigate to <a href="http://localhost:8080" style="color: #1abc9c;">http://localhost:8080</a> to start playing! Remember to open two tabs for a proper multiplayer experience.</li>
 </ol>
 
 <!-- Game Rules -->

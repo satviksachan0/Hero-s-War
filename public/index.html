@@ -5,10 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chess-like Game</title>
     <link rel="stylesheet" href="styles.css" />
-    <style></style>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #2c3e50;
+        margin: 0;
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        color: #1abc9c;
+        font-size: 36px;
+        margin-bottom: 30px;
+      }
+      #rules {
+        background-color: #ecf0f1;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+      h2 {
+        color: #2980b9;
+        font-size: 28px;
+      }
+      p,
+      ul {
+        font-size: 18px;
+        line-height: 1.6;
+      }
+      strong {
+        color: #e74c3c;
+      }
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      #game-board {
+        margin-top: 20px;
+      }
+      #game-status {
+        margin-top: 10px;
+        font-size: 20px;
+        text-align: center;
+      }
+      .note {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border: 1px solid #ffeeba;
+      }
+    </style>
   </head>
   <body>
     <h1>Chess-like Game</h1>
+
+    <div class="note">
+      <p>
+        <strong>Note:</strong> To play the game, ensure that you open two
+        browser tabs or windows. Each tab will represent a different player in
+        the game. Both tabs need to be connected to the game server
+        simultaneously for the game to function correctly.
+      </p>
+    </div>
 
     <div id="rules">
       <h2>Game Rules</h2>
