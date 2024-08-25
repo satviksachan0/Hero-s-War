@@ -10,6 +10,18 @@ class Game {
         return Array(5).fill().map(() => Array(5).fill(null));
     }
 
+
+    checkForWinner() {
+        const player1Pieces = this.board.flat().filter(cell => cell && cell.player === 1);
+        const player2Pieces = this.board.flat().filter(cell => cell && cell.player === 2);
+
+        if (player1Pieces.length === 0) {
+            return 2; // Player 2 wins
+        } else if (player2Pieces.length === 0) {
+            return 1; // Player 1 wins
+        }
+        return null; // No winner yet
+    }
     initializeBoard() {
         this.board = [
             [{ player: 1, piece: new Pawn() }, { player: 1, piece: new Hero1() }, { player: 1, piece: new Hero2() }, { player: 1, piece: new Hero1() }, { player: 1, piece: new Pawn() }],
@@ -59,6 +71,18 @@ class Game {
             return { success: false, message: 'Invalid move: Cannot capture your own piece' };
         }
     
+
+
+
+
+        const winner = this.checkForWinner();
+        if (winner) {
+            return {
+                success: true,
+                gameOver: true,
+                winner: `Player ${winner}`
+            };
+        }
         // Update the current player after a successful move
         this.currentPlayerIndex = this.currentPlayerIndex === 0 ? 1 : 0;
         
@@ -112,7 +136,7 @@ class Hero1 extends Character {
         // Hero1 can move two blocks straight in any direction
         if ((dx === 2 && dy === 0) || (dx === 0 && dy === 2)) {
             const pathClear = this.checkPath(board, from, to);
-            return this.isWithinBounds(to.x, to.y) && true;
+            return this.isWithinBounds(to.x, to.y) && pathClear;
         }
         return false;
     }
@@ -125,12 +149,23 @@ class Hero1 extends Character {
         let y = from.y + stepY;
 
         while (x !== to.x || y !== to.y) {
-            if (board[y][x]) {
+            if (board[y][x] && board[y][x].player==board[from.y][from.x].player) {
                 return false;
             }
             x += stepX;
             y += stepY;
         }
+         x = from.x + stepX;
+         y = from.y + stepY;
+
+        while (x !== to.x || y !== to.y) {
+            if (board[y][x]) {
+                board[y][x]=null;
+            }
+            x += stepX;
+            y += stepY;
+        }
+
         return true;
     }
 }
@@ -146,8 +181,8 @@ class Hero2 extends Character {
 
         // Hero2 can move two blocks diagonally in any direction
         if (dx === 2 && dy === 2) {
-            const pathClear = this.checkPath(board, from, to);
-            return this.isWithinBounds(to.x, to.y) && true;
+
+            return this.isWithinBounds(to.x, to.y) && this.checkPath(board, from, to);
         }
         return false;
     }
@@ -158,7 +193,17 @@ class Hero2 extends Character {
 
         let x = from.x + stepX;
         let y = from.y + stepY;
-
+        const currp=board[from.y][from.x].player;
+        if(board[y][x]){
+            if(board[y][x].player==currp)
+                return false;
+        }
+        if(board[to.y][to.x]){
+            if(board[to.y][to.x].player==currp)
+                return false;
+        }
+        board[y][x]=null;
+        
         // Since Hero2 moves diagonally, there's only one step to check
         return !board[y][x];
 

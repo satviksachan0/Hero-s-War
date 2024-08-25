@@ -61,6 +61,18 @@ function handlePlayerMessages(playerWs, opponentWs, playerNumber) {
         if (data.type === 'move') {
             const result = currentGame.makeMove(playerNumber, data.from, data.to);
             if (result.success) {
+                if(result.gameOver){
+                    const gameOverMessage = {
+                        type: 'gameOver',
+                        winner: result.currentPlayer === 0 ? 1 : 2
+                    };
+                    const lost = {
+                        type: 'loser'
+                    };
+                    opponentWs.send(JSON.stringify(lost));
+                    playerWs.send(JSON.stringify(gameOverMessage));
+
+                }
                 const updateMessage = {
                     type: 'update',
                     board: result.board,

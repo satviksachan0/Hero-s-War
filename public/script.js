@@ -27,7 +27,10 @@ ws.addEventListener('message', (message) => {
             alert(data.reason);
             break;
         case 'gameOver':
-            alert(`Game Over! ${data.winner} wins!`);
+            alert(`Game Over! Player: ${data.winner} You Win!`);
+            break;
+        case 'loser':
+            alert(`You Lost OOPS try again next time!!`);
             break;
     }
 });
