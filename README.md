@@ -87,11 +87,3 @@ npm start
 <p style="text-align: center;">
     <img src="screenshot.png" alt="Game Screenshot" width="600" style="border-radius: 10px; border: 3px solid #3498db; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); margin-top: 20px;">
 </p>
-
-<!-- License -->
-<h2 style="font-family: 'Montserrat', sans-serif; color: #3498db; font-weight: 700; margin-top: 40px; margin-left: 50px;">
-    📄 License
-</h2>
-<p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #2c3e50; line-height: 1.8; margin: 20px 70px;">
-    This project is licensed under the MIT License. See the <a href="LICENSE" style="color: #1abc9c;">LICENSE</a> file for more details.
-</p>
