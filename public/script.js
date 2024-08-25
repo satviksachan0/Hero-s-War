@@ -27,10 +27,10 @@ ws.addEventListener('message', (message) => {
             alert(data.reason);
             break;
         case 'gameOver':
-            alert(`Game Over! Player: ${data.winner} You Win!`);
+            alert(`Game Over! Player ${data.winner} wins!`);
             break;
         case 'loser':
-            alert(`You Lost OOPS try again next time!!`);
+            alert('You Lost. Try again next time!');
             break;
     }
 });
@@ -67,23 +67,6 @@ function renderBoard(board, player) {
     }
 }
 
-// function createCellElement(cell, x, y, player) {
-//     const cellElement = document.createElement('div');
-//     cellElement.classList.add('cell');
-
-//     if (cell) {
-//         cellElement.classList.add(`player${cell.player}`);
-//         cellElement.innerText = cell.piece;
-
-//         if (cell.player === player) {
-//             cellElement.addEventListener('click', () => {
-//                 selectPiece(x, y);
-//             });
-//         }
-//     }
-
-//     return cellElement;
-// }
 function createCellElement(cell, x, y, player) {
     const cellElement = document.createElement('div');
     cellElement.classList.add('cell');
@@ -91,7 +74,7 @@ function createCellElement(cell, x, y, player) {
     if (cell) {
         cellElement.classList.add(`player${cell.player}`);
         cellElement.innerText = cell.piece.type;  // Extract the piece name directly
-        // console.log(cell.piece);
+
         if (cell.player === player) {
             cellElement.addEventListener('click', () => {
                 selectPiece(x, y);
@@ -102,24 +85,54 @@ function createCellElement(cell, x, y, player) {
     return cellElement;
 }
 
-
 function highlightPossibleMoves(board, from, player) {
-    board.forEach((row, y) => {
-        row.forEach((cell, x) => {
-            const cellElement = document.querySelector(`#game-board .cell:nth-child(${y * 5 + x + 1})`);
+    const pieceType = board[from.y][from.x].piece.type;
+    const possibleMoves = getPossibleMoves(board, from, pieceType, player);
 
-            // Check if the cell is empty or contains an opponent's piece
-            if (!cell || (cell && cell.player !== player)) {
-                cellElement.classList.add('highlight');
-                
-                cellElement.addEventListener('click', () => {
-                    movePiece(from, { x, y });
-                });
-            }
+    possibleMoves.forEach(({ x, y }) => {
+        const cellElement = document.querySelector(`#game-board .cell:nth-child(${y * 5 + x + 1})`);
+        
+        // Highlight the cell
+        cellElement.classList.add('highlight');
+        
+        // Add the click event to make the move
+        cellElement.addEventListener('click', () => {
+            movePiece(from, { x, y });
         });
     });
 }
 
+function getPossibleMoves(board, from, pieceType, player) {
+    const moves = [];
+    const directions = [];
+
+    switch (pieceType) {
+        case 'Pawn':
+            directions.push({ dx: 0, dy: 1 }, { dx: 0, dy: -1 }, { dx: 1, dy: 0 }, { dx: -1, dy: 0 });
+            break;
+        case 'Hero1':
+            directions.push({ dx: 0, dy: 2 }, { dx: 0, dy: -2 }, { dx: 2, dy: 0 }, { dx: -2, dy: 0 });
+            break;
+        case 'Hero2':
+            directions.push({ dx: 2, dy: 2 }, { dx: 2, dy: -2 }, { dx: -2, dy: 2 }, { dx: -2, dy: -2 });
+            break;
+    }
+
+    directions.forEach(({ dx, dy }) => {
+        const newX = from.x + dx;
+        const newY = from.y + dy;
+
+        // Ensure the move is within bounds and either empty or contains an opponent's piece
+        if (newX >= 0 && newX < 5 && newY >= 0 && newY < 5) {
+            const targetCell = board[newY][newX];
+            if (!targetCell || targetCell.player !== player) {
+                moves.push({ x: newX, y: newY });
+            }
+        }
+    });
+
+    return moves;
+}
 
 function selectPiece(x, y) {
     selectedPiece = { x, y };

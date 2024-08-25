@@ -5,11 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chess-like Game</title>
     <link rel="stylesheet" href="styles.css" />
+    <style></style>
   </head>
   <body>
     <h1>Chess-like Game</h1>
+
+    <div id="rules">
+      <h2>Game Rules</h2>
+      <p>
+        <strong>Objective:</strong> Eliminate all of your opponent's pieces.
+      </p>
+      <p>
+        <strong>Setup:</strong> The game is played on a 5x5 grid. Each player
+        controls 5 characters: Pawns (P), Hero1s (H1), and Hero2s (H2). Pieces
+        are placed on the first and last rows of the board for each player.
+      </p>
+      <p><strong>Character Movements:</strong></p>
+      <ul>
+        <li>
+          <strong>Pawn (P):</strong> Moves one block in any direction (Left,
+          Right, Forward, or Backward).
+        </li>
+        <li>
+          <strong>Hero1 (H1):</strong> Moves two blocks straight in any
+          direction. Can capture any opponent's piece in its path.
+        </li>
+        <li>
+          <strong>Hero2 (H2):</strong> Moves two blocks diagonally in any
+          direction. Can capture any opponent's piece in its path.
+        </li>
+      </ul>
+      <p>
+        <strong>Turn-Based Play:</strong> Players alternate turns. A move is
+        only valid if it adheres to the character's movement rules and targets
+        an empty cell or an opponent's piece.
+      </p>
+      <p>
+        <strong>Winning:</strong> The game ends when a player has eliminated all
+        of the opponent's pieces. The player who achieves this first is declared
+        the winner.
+      </p>
+    </div>
+
     <div id="game-board"></div>
     <div id="game-status"></div>
+
     <script src="script.js"></script>
   </body>
 </html>
