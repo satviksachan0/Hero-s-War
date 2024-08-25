@@ -103,9 +103,12 @@ function createCellElement(cell, x, y, player) {
 function highlightPossibleMoves(board, from, player) {
     board.forEach((row, y) => {
         row.forEach((cell, x) => {
-            if (!cell) {
-                const cellElement = document.querySelector(`#game-board .cell:nth-child(${y * 5 + x + 1})`);
+            const cellElement = document.querySelector(`#game-board .cell:nth-child(${y * 5 + x + 1})`);
+
+            // Check if the cell is empty or contains an opponent's piece
+            if (!cell || (cell && cell.player !== player)) {
                 cellElement.classList.add('highlight');
+                
                 cellElement.addEventListener('click', () => {
                     movePiece(from, { x, y });
                 });
@@ -113,6 +116,7 @@ function highlightPossibleMoves(board, from, player) {
         });
     });
 }
+
 
 function selectPiece(x, y) {
     selectedPiece = { x, y };

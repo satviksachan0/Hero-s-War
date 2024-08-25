@@ -29,23 +29,42 @@ class Game {
     }
 
     makeMove(player, from, to) {
+        console.log('Move received:', player, from, to);
         const piece = this.board[from.y][from.x];
+        
+
         if (!piece || piece.player !== player) {
+            console.log("Invalid Move");
             return { success: false, message: 'Invalid move' };
         }
-
-        // Validate the move based on the piece's movement logic
+        
+        const targetCell = this.board[to.y][to.x];
         const moveValid = piece.piece.move(this.board, from, to);
 
-        if (moveValid) {
-            this.board[to.y][to.x] = piece; // Move the piece to the new position
-            this.board[from.y][from.x] = null; // Clear the old position
-            this.currentPlayerIndex = this.currentPlayerIndex === 0 ? 1 : 0; // Switch turns
-            return { success: true, board: this.board, currentPlayer: this.currentPlayerIndex + 1 };
-        } else {
+        if(!moveValid)
             return { success: false, message: 'Invalid move' };
+        
+
+        if (targetCell && targetCell.player !== player) {
+            console.log(`Capturing opponent's piece at (${to.x}, ${to.y})`);
+            // Remove the opponent's piece by replacing it with the current player's piece
+            this.board[to.y][to.x] = piece;
+            this.board[from.y][from.x] = null;
+        } else if (!targetCell) {
+            // Move the piece to the new position if the target cell is empty
+            this.board[to.y][to.x] = piece;
+            this.board[from.y][from.x] = null;
+        } else {
+            console.log("Invalid Move: Can't capture your own piece");
+            return { success: false, message: 'Invalid move: Cannot capture your own piece' };
         }
+    
+        // Update the current player after a successful move
+        this.currentPlayerIndex = this.currentPlayerIndex === 0 ? 1 : 0;
+        
+        return { success: true, board: this.board, currentPlayer: this.currentPlayerIndex + 1 };
     }
+    
 }
 
 
@@ -74,7 +93,8 @@ class Pawn extends Character {
 
         // Pawn can only move one block in any direction
         if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
-            return this.isWithinBounds(to.x, to.y) && !board[to.y][to.x];
+            const pathClear=!board[to.y][to.x]
+            return this.isWithinBounds(to.x, to.y) && true;
         }
         return false;
     }
@@ -92,7 +112,7 @@ class Hero1 extends Character {
         // Hero1 can move two blocks straight in any direction
         if ((dx === 2 && dy === 0) || (dx === 0 && dy === 2)) {
             const pathClear = this.checkPath(board, from, to);
-            return this.isWithinBounds(to.x, to.y) && pathClear;
+            return this.isWithinBounds(to.x, to.y) && true;
         }
         return false;
     }
@@ -127,7 +147,7 @@ class Hero2 extends Character {
         // Hero2 can move two blocks diagonally in any direction
         if (dx === 2 && dy === 2) {
             const pathClear = this.checkPath(board, from, to);
-            return this.isWithinBounds(to.x, to.y) && pathClear;
+            return this.isWithinBounds(to.x, to.y) && true;
         }
         return false;
     }
@@ -141,6 +161,7 @@ class Hero2 extends Character {
 
         // Since Hero2 moves diagonally, there's only one step to check
         return !board[y][x];
+
     }
 }
 
