@@ -60,7 +60,7 @@ npm start
 <ul style="font-family: 'Roboto', sans-serif; color: #2c3e50; font-size: 16px; line-height: 1.6;">
     <li><b>Grid:</b> The game board consists of a 5x5 grid.</li>
     <li><b>Pieces:</b> Each player has several pieces, including "Pawn," "Hero1," and "Hero2," each with distinct movement abilities.</li>
-    <li><b>Turns:</b> Players take turns moving one piece at a time. The current player is indicated at the top of the game screen.</li>
+    <li><b>Turns:</b> Players take turns moving one piece at a time. The current player is indicated at the bottom of the game screen.</li>
     <li><b>Winning the Game:</b> Capture all of your opponent's pieces or achieve the specified win condition to win the game.</li>
     <li><b>Movement:</b> Click on a piece to view its possible moves, highlighted on the grid. Click on a highlighted cell to move the piece.</li>
 </ul>
@@ -81,12 +81,4 @@ npm start
 </h2>
 <p style="text-align: center;">
     <img src="screenshot.png" alt="Game Screenshot" width="600" style="border-radius: 10px; border: 2px solid #2980b9;">
-</p>
-
-<!-- License -->
-<h2 style="font-family: 'Montserrat', sans-serif; color: #2980b9; font-weight: 700; margin-top: 30px;">
-    License
-</h2>
-<p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #34495e; line-height: 1.6;">
-    This project is licensed under the MIT License. See the <a href="LICENSE" style="color: #2980b9;">LICENSE</a> file for more details.
 </p>
