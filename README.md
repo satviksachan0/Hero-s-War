@@ -47,7 +47,7 @@ npm install
     </li>
     <li>Start the server:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
-npm start
+node server.js
         </pre>
     </li>
     <li>Open your web browser and navigate to <a href="http://localhost:8080" style="color: #1abc9c;">http://localhost:8080</a> to start playing!</li>
