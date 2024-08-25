@@ -2,21 +2,21 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
-const Game = require('./game');
+const Game = require('./game'); // Import your game class
 
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server:server });
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 let waitingPlayer = null; // Store the first player who connects
-let currentGame = null;
+let currentGame = null; // Store the current game instance
 
 wss.on('connection', (ws) => {
     console.log('New client connected');
-
+    
     if (waitingPlayer === null) {
         // First player to join, wait for the second player
         waitingPlayer = ws;
@@ -46,6 +46,7 @@ wss.on('connection', (ws) => {
         waitingPlayer = null;
     }
 
+    // Handle disconnection
     ws.on('close', () => {
         console.log('Client disconnected');
         if (ws === waitingPlayer) {
@@ -59,85 +60,29 @@ function handlePlayerMessages(playerWs, opponentWs, playerNumber) {
         const data = JSON.parse(message);
         if (data.type === 'move') {
             const result = currentGame.makeMove(playerNumber, data.from, data.to);
-            if (result.valid) {
+            if (result.success) {
                 const updateMessage = {
                     type: 'update',
-                    board: currentGame.board,
-                    currentPlayer: currentGame.currentPlayerIndex
+                    board: result.board,
+                    currentPlayer: result.currentPlayer
                 };
                 playerWs.send(JSON.stringify(updateMessage));
                 opponentWs.send(JSON.stringify(updateMessage));
                 
-                if (result.gameOver) {
+                if (result.currentPlayer === playerNumber) { // Check if game is over
                     const gameOverMessage = {
                         type: 'gameOver',
-                        winner: `Player ${currentGame.currentPlayerIndex}`
+                        winner: result.currentPlayer === 1 ? 2 : 1
                     };
                     playerWs.send(JSON.stringify(gameOverMessage));
                     opponentWs.send(JSON.stringify(gameOverMessage));
                 }
             } else {
-                playerWs.send(JSON.stringify({ type: 'invalid', reason: result.reason }));
+                playerWs.send(JSON.stringify({ type: 'invalid', reason: result.message }));
             }
         }
     });
 }
-//---------------
-const players = [];
-let gameState = {
-    board: [
-        // Initial board setup, replace this with your actual game logic
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null]
-    ],
-    currentPlayer: 1
-};
-
-// Function to initialize the game with pieces
-function initializeGame() {
-    gameState.board = [
-        [{ player: 1, piece: 'P1' }, { player: 1, piece: 'H1' }, { player: 1, piece: 'H2' }, { player: 1, piece: 'H1' }, { player: 1, piece: 'P1' }],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [{ player: 2, piece: 'P1' }, { player: 2, piece: 'H1' }, { player: 2, piece: 'H2' }, { player: 2, piece: 'H1' }, { player: 2, piece: 'P1' }]
-    ];
-}
-
-// Call this function when both players have joined
-initializeGame();
-
-wss.on('connection', (ws) => {
-    if (players.length < 2) {
-        players.push(ws);
-        ws.send(JSON.stringify({ type: 'join', player: players.length }));
-
-        // Start the game if both players have joined
-        if (players.length === 2) {
-            players.forEach((player) => {
-                player.send(JSON.stringify({ type: 'start', board: gameState.board, currentPlayer: gameState.currentPlayer }));
-            });
-        }
-    }
-
-    // Handle incoming messages from clients
-    ws.on('message', (message) => {
-        const data = JSON.parse(message);
-        // console.log('Received move:', data);
-        // Handle moves and other game events here
-        if (data.type === 'move') {
-            const playerNumber = data.player;
-            const result = currentGame.makeMove(playerNumber, data.from, data.to);
-    
-            // Handle the result...
-        }
-    });
-});
-
-//-------------
 
 server.listen(8080, () => {
     console.log('Server started on port 8080');

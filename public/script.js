@@ -2,6 +2,16 @@ let selectedPiece = null;
 
 const ws = new WebSocket('ws://localhost:8080');
 
+// ws.onopen = () => {
+//     console.log('Connected to server');
+//     ws.send(JSON.stringify({ type: 'join' }));
+// };
+
+ws.addEventListener("open", (event) => {
+    ws.send(JSON.stringify({ type: 'join' }));
+    console.log("connected to server");
+  });
+
 ws.onmessage = (message) => {
     const data = JSON.parse(message.data);
 
