@@ -104,8 +104,8 @@
       </p>
       <p>
         <strong>Setup:</strong> The game is played on a 5x5 grid. Each player
-        controls 5 characters: Pawns (P), Hero1s (H1), and Hero2s (H2). Pieces
-        are placed on the first and last rows of the board for each player.
+        controls 5 characters: Pawns, Hero1, Hero2 and Hero3 . Pieces are placed
+        on the first and last rows of the board for each player.
       </p>
       <p><strong>Character Movements:</strong></p>
       <ul>
@@ -121,6 +121,10 @@
           <strong>Hero2 (H2):</strong> Moves two blocks diagonally in any
           direction. Can capture any opponent's piece in its path.
         </li>
+        <li>
+          <strong>Hero3 (H3):</strong> This hero can move in L shape all
+          directions.It can eliminate opponents piece present in final position
+        </li>
       </ul>
       <p>
         <strong>Turn-Based Play:</strong> Players alternate turns. A move is
@@ -131,6 +135,10 @@
         <strong>Winning:</strong> The game ends when a player has eliminated all
         of the opponent's pieces. The player who achieves this first is declared
         the winner.
+      </p>
+      <p>
+        <strong>To Connect:</strong> Player1 clicks on Create game and shares
+        the code with Player2 to join
       </p>
     </div>
 
@@ -150,17 +158,17 @@
     <div id="game-status"></div>
 
     <script>
+      //game is created here by player 1
       function createGame() {
         const gameId = Math.random().toString(36).substr(2, 9);
         document.getElementById("game-id").value = gameId;
-        // Add logic to handle game creation with this gameId
+
         console.log(`Game created with ID: ${gameId}`);
       }
-
+      // function to join the game by player 2
       function joinGame() {
         const gameId = document.getElementById("game-id").value;
         if (gameId) {
-          // Add logic to handle joining a game with the specified gameId
           console.log(`Joining game with ID: ${gameId}`);
         } else {
           alert("Please enter a Game ID.");

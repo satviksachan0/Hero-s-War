@@ -3,9 +3,10 @@ class Game {
         this.board = this.createBoard();
         this.players = [];
         this.currentPlayerIndex = 0;
+        //initializing the board to start a game
         this.initializeBoard();
     }
-
+    //empty board
     createBoard() {
         return Array(5).fill().map(() => Array(5).fill(null));
     }
@@ -22,6 +23,7 @@ class Game {
         }
         return null; // No winner yet
     }
+
     initializeBoard() {
         this.board = [
             [{ player: 1, piece: new Pawn() }, { player: 1, piece: new Hero1() }, { player: 1, piece: new Hero2() }, { player: 1, piece: new Hero3() }, { player: 1, piece: new Pawn() }],
@@ -59,11 +61,9 @@ class Game {
 
         if (targetCell && targetCell.player !== player) {
             console.log(`Capturing opponent's piece at (${to.x}, ${to.y})`);
-            // Remove the opponent's piece by replacing it with the current player's piece
             this.board[to.y][to.x] = piece;
             this.board[from.y][from.x] = null;
         } else if (!targetCell) {
-            // Move the piece to the new position if the target cell is empty
             this.board[to.y][to.x] = piece;
             this.board[from.y][from.x] = null;
         } else {
@@ -74,7 +74,7 @@ class Game {
 
 
 
-
+        //check for winner after moves
         const winner = this.checkForWinner();
         if (winner) {
             return {
@@ -83,7 +83,7 @@ class Game {
                 winner: `Player ${winner}`
             };
         }
-        // Update the current player after a successful move
+        // update the current player after a successful move
         this.currentPlayerIndex = this.currentPlayerIndex === 0 ? 1 : 0;
         
         return { success: true, board: this.board, currentPlayer: this.currentPlayerIndex + 1 };
@@ -91,7 +91,7 @@ class Game {
     
 }
 
-
+// Characters of the game are defined here
 class Character {
     constructor(type) {
         this.type = type;
@@ -102,7 +102,7 @@ class Character {
     }
 
     move(board, from, to) {
-        throw new Error("This method should be overridden in child classes");
+        throw new Error("Should be in child class");
     }
 }
 
@@ -115,7 +115,7 @@ class Pawn extends Character {
         const dx = Math.abs(from.x - to.x);
         const dy = Math.abs(from.y - to.y);
 
-        // Pawn can only move one block in any direction
+
         if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
             const pathClear=!board[to.y][to.x]
             return this.isWithinBounds(to.x, to.y) && true;
@@ -133,7 +133,7 @@ class Hero1 extends Character {
         const dx = Math.abs(from.x - to.x);
         const dy = Math.abs(from.y - to.y);
 
-        // Hero1 can move two blocks straight in any direction
+
         if ((dx === 2 && dy === 0) || (dx === 0 && dy === 2)) {
             const pathClear = this.checkPath(board, from, to);
             return this.isWithinBounds(to.x, to.y) && pathClear;
@@ -179,7 +179,6 @@ class Hero2 extends Character {
         const dx = Math.abs(from.x - to.x);
         const dy = Math.abs(from.y - to.y);
 
-        // Hero2 can move two blocks diagonally in any direction
         if (dx === 2 && dy === 2) {
 
             return this.isWithinBounds(to.x, to.y) && this.checkPath(board, from, to);
@@ -204,7 +203,7 @@ class Hero2 extends Character {
         }
         board[y][x]=null;
         
-        // Since Hero2 moves diagonally, there's only one step to check
+
         return !board[y][x];
 
     }
@@ -218,15 +217,15 @@ class Hero3 extends Character {
         const dx = Math.abs(from.x - to.x);
         const dy = Math.abs(from.y - to.y);
 
-        // Define the movement pattern for Hero3
+
         const validMoves = [
-            { dx: 2, dy: 1 }, { dx: 2, dy: -1 }, // FL, FR
-            { dx: -2, dy: 1 }, { dx: -2, dy: -1 }, // BL, BR
-            { dx: 1, dy: 2 }, { dx: -1, dy: 2 }, // RF, RB
-            { dx: 1, dy: -2 }, { dx: -1, dy: -2 } // LF, LB
+            { dx: 2, dy: 1 }, { dx: 2, dy: -1 }, 
+            { dx: -2, dy: 1 }, { dx: -2, dy: -1 }, 
+            { dx: 1, dy: 2 }, { dx: -1, dy: 2 }, 
+            { dx: 1, dy: -2 }, { dx: -1, dy: -2 } 
         ];
 
-        // Check if the move matches any of Hero3's valid patterns
+
         if (validMoves.some(move => move.dx === dx && move.dy === dy)) {
             return this.isWithinBounds(to.x, to.y) && this.attackOnlyFinalPosition(board, from, to);
         }
@@ -239,11 +238,11 @@ class Hero3 extends Character {
         const currPlayer = board[from.y][from.x].player;
 
         if (targetCell && targetCell.player !== currPlayer) {
-            // Capture the piece at the final landing position
+
             board[to.y][to.x] = null;
         }
 
-        // Move Hero3 to the final position
+
         board[to.y][to.x] = board[from.y][from.x];
         board[from.y][from.x] = null;
 
@@ -252,7 +251,7 @@ class Hero3 extends Character {
 }
 
 
-
+//teesting game
 // const game = new Game();
 // const result = game.makeMove(1, { x: 0, y: 0 }, { x: 2, y: 2 });
 // console.log(result);
