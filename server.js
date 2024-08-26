@@ -102,16 +102,19 @@ function handlePlayerMessages(gameInstance, playerNumber) {
                 playerWs.send(JSON.stringify(updateMessage));
                 opponentWs.send(JSON.stringify(updateMessage));
 
-                if (result.gameOver) {
+                if(result.gameOver){
                     const gameOverMessage = {
                         type: 'gameOver',
-                        winner: result.currentPlayer === playerNumber ? playerNumber : 3 - playerNumber
+                        winner: result.currentPlayer === 0 ? 1 : 2
                     };
+                    const lost = {
+                        type: 'loser'
+                    };
+                    opponentWs.send(JSON.stringify(lost));
                     playerWs.send(JSON.stringify(gameOverMessage));
-                    opponentWs.send(JSON.stringify(gameOverMessage));
-
-                    // Remove the game instance after game over
                     delete games[data.gameId];
+
+
                 }
             } else {
                 playerWs.send(JSON.stringify({ type: 'invalid', reason: result.message }));
