@@ -24,11 +24,11 @@ class Game {
     }
     initializeBoard() {
         this.board = [
-            [{ player: 1, piece: new Pawn() }, { player: 1, piece: new Hero1() }, { player: 1, piece: new Hero2() }, { player: 1, piece: new Hero1() }, { player: 1, piece: new Pawn() }],
+            [{ player: 1, piece: new Pawn() }, { player: 1, piece: new Hero1() }, { player: 1, piece: new Hero2() }, { player: 1, piece: new Hero3() }, { player: 1, piece: new Pawn() }],
             [null, null, null, null, null],
             [null, null, null, null, null],
             [null, null, null, null, null],
-            [{ player: 2, piece: new Pawn() }, { player: 2, piece: new Hero1() }, { player: 2, piece: new Hero2() }, { player: 2, piece: new Hero1() }, { player: 2, piece: new Pawn() }]
+            [{ player: 2, piece: new Pawn() }, { player: 2, piece: new Hero1() }, { player: 2, piece: new Hero2() }, { player: 2, piece: new Hero3() }, { player: 2, piece: new Pawn() }]
         ];
     }
 
@@ -209,6 +209,48 @@ class Hero2 extends Character {
 
     }
 }
+class Hero3 extends Character {
+    constructor() {
+        super('Hero3');
+    }
+
+    move(board, from, to) {
+        const dx = Math.abs(from.x - to.x);
+        const dy = Math.abs(from.y - to.y);
+
+        // Define the movement pattern for Hero3
+        const validMoves = [
+            { dx: 2, dy: 1 }, { dx: 2, dy: -1 }, // FL, FR
+            { dx: -2, dy: 1 }, { dx: -2, dy: -1 }, // BL, BR
+            { dx: 1, dy: 2 }, { dx: -1, dy: 2 }, // RF, RB
+            { dx: 1, dy: -2 }, { dx: -1, dy: -2 } // LF, LB
+        ];
+
+        // Check if the move matches any of Hero3's valid patterns
+        if (validMoves.some(move => move.dx === dx && move.dy === dy)) {
+            return this.isWithinBounds(to.x, to.y) && this.attackOnlyFinalPosition(board, from, to);
+        }
+
+        return false;
+    }
+
+    attackOnlyFinalPosition(board, from, to) {
+        const targetCell = board[to.y][to.x];
+        const currPlayer = board[from.y][from.x].player;
+
+        if (targetCell && targetCell.player !== currPlayer) {
+            // Capture the piece at the final landing position
+            board[to.y][to.x] = null;
+        }
+
+        // Move Hero3 to the final position
+        board[to.y][to.x] = board[from.y][from.x];
+        board[from.y][from.x] = null;
+
+        return true;
+    }
+}
+
 
 
 // const game = new Game();
