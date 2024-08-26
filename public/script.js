@@ -36,6 +36,7 @@ ws.addEventListener('message', (message) => {
 });
 
 function handleJoin(player) {
+    playerNumber = player;
     if(player==1)
         updateStatus2(`You are Player ${player}, BLUE`);
     else    
@@ -144,6 +145,7 @@ function getPossibleMoves(board, from, pieceType, player) {
 }
 
 function selectPiece(x, y) {
+    if (playerNumber !== currentPlayer) return;
     selectedPiece = { x, y };
     updateStatus(`Selected piece at (${x + 1}, ${y + 1})`);
     renderBoard(currentBoard, currentPlayer);
