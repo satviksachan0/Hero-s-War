@@ -40,6 +40,11 @@
 git clone https://github.com/satviksachan0/chess-game.git
         </pre>
     </li>
+    <li>Move to local branch
+        <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
+git checkout localDeploy
+        </pre>
+    </li>
     <li>Navigate to the project directory:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
 cd chess-game
