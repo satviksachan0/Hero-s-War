@@ -27,7 +27,7 @@ ws.addEventListener('message', (message) => {
             alert(data.reason);
             break;
         case 'gameOver':
-            alert(`Game Over! Player ${data.winner}: you win!!!`);
+            alert(`Game Over! You win!!!`);
             break;
         case 'loser':
             alert('You Lost. Try again next time!');
@@ -125,6 +125,18 @@ function getPossibleMoves(board, from, pieceType, player) {
             break;
         case 'Hero2':
             directions.push({ dx: 2, dy: 2 }, { dx: 2, dy: -2 }, { dx: -2, dy: 2 }, { dx: -2, dy: -2 });
+            break;
+        case 'Hero3':
+            directions.push(
+                    { dx: 2, dy: 1 },  // FL
+                    { dx: 2, dy: -1 }, // FR
+                    { dx: -2, dy: 1 }, // BL
+                    { dx: -2, dy: -1 }, // BR
+                    { dx: 1, dy: 2 },  // RF
+                    { dx: -1, dy: 2 }, // RB
+                    { dx: 1, dy: -2 }, // LF
+                    { dx: -1, dy: -2 } // LB
+            );
             break;
     }
 
