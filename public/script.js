@@ -27,7 +27,7 @@ ws.addEventListener('message', (message) => {
             alert(data.reason);
             break;
         case 'gameOver':
-            alert(`Game Over! Player ${data.winner} wins!`);
+            alert(`Game Over! Player ${data.winner}: you win!!!`);
             break;
         case 'loser':
             alert('You Lost. Try again next time!');
@@ -36,7 +36,11 @@ ws.addEventListener('message', (message) => {
 });
 
 function handleJoin(player) {
-    updateStatus(`You are Player ${player}`);
+    if(player==1)
+        updateStatus2(`You are Player ${player}, BLUE`);
+    else    
+        updateStatus2(`You are Player ${player}, RED`);
+    // updateStatus(`You are Player ${player}`);
 }
 
 function updateGame(board, player) {
@@ -48,6 +52,11 @@ function updateGame(board, player) {
 
 function updateStatus(status) {
     document.getElementById('game-status').innerText = status;
+    // document.getElementById('player-designation').innerText=status;
+}
+function updateStatus2(status) {
+    // document.getElementById('game-status').innerText = status;
+    document.getElementById('player-designation').innerText=status;
 }
 
 function renderBoard(board, player) {
