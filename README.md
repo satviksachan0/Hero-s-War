@@ -34,10 +34,7 @@
     You can run the Deployed version using the following link(Both players need to open this link):<br>
 </p>
 <p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #2c3e50; line-height: 1.8; margin: 20px 70px;">
-        https://chess-game-fkcz.onrender.com<br>
-</p>
-<p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #2c3e50; line-height: 1.8; margin: 20px 70px;">
-    NOTE: You might need to wait for about 50s, the server has to reload due to inactivity.
+        https://satviksachan-21bce0423.vercel.app/
 </p>
 
 <!-- Installation Instructions -->
