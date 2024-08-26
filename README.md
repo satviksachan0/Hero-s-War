@@ -34,8 +34,7 @@
     You can run the Deployed version using the following link(Both players need to open this link):<br>
 </p>
 <p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #2c3e50; line-height: 1.8; margin: 20px 70px;">
-        satviksachan-21bce0423.vercel.app
-        
+        https://satviksachan-21bce0423.vercel.app/
 </p>
 
 <!-- Installation Instructions -->
