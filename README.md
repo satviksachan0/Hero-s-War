@@ -52,7 +52,7 @@ git clone https://github.com/satviksachan0/SatvikSachan_21BCE0423
     </li>
     <li>Navigate to the project directory:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
-cd chess-game
+cd SatvikSachan_21BCE0423
         </pre>
     </li>
     <li>Install the required dependencies:
