@@ -1,8 +1,11 @@
+
 let selectedPiece = null;
 let currentBoard = [];
 let currentPlayer = null;
 
-const ws = new WebSocket('ws://localhost:8080');
+// const ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket("https://chess-game-fkcz.onrender.com");
+
 
 ws.addEventListener('open', () => {
     ws.send(JSON.stringify({ type: 'join' }));

@@ -3,7 +3,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
 const Game = require('./game'); // Import your game class
-
+require('dotenv').config();
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server:server });
@@ -96,6 +96,6 @@ function handlePlayerMessages(playerWs, opponentWs, playerNumber) {
     });
 }
 
-server.listen(8080, () => {
+server.listen(process.env.PORT || 8080, () => {
     console.log('Server started on port 8080');
 });
