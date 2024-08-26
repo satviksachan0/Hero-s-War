@@ -2,16 +2,16 @@ const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const path = require('path');
-const Game = require('./game'); // Import your game class
+const Game = require('./game'); 
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server: server });
 
-// Serve static files from the "public" directory
+//frontend dir
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Store active games by game ID
+
 const games = {}; 
 
 wss.on('connection', (ws) => {
@@ -23,10 +23,11 @@ wss.on('connection', (ws) => {
 
         if (data.type === 'create') {
             if (!games[gameId]) {
-                // Create a new game and set the first player
+
                 games[gameId] = {
                     game: new Game(),
-                    players: [ws, null]  // [Player 1, Player 2]
+                    //player store
+                    players: [ws, null]  
                 };
                 ws.send(JSON.stringify({ type: 'join', player: 1 }));
                 ws.send(JSON.stringify({ type: 'message', text: 'Game created. Waiting for the second player to join...' }));
@@ -38,13 +39,13 @@ wss.on('connection', (ws) => {
                 const gameInstance = games[gameId];
 
                 if (gameInstance.players[1] === null) {
-                    // Second player joins the game
+
                     gameInstance.players[1] = ws;
                     ws.send(JSON.stringify({ type: 'join', player: 2 }));
                     gameInstance.players[0].send(JSON.stringify({ type: 'message', text: 'Second player joined. The game is starting!' }));
                     ws.send(JSON.stringify({ type: 'message', text: 'You have joined the game!' }));
 
-                    // Notify both players that the game has started
+
                     const gameStartMessage = {
                         type: 'start',
                         board: gameInstance.game.board,
@@ -53,7 +54,7 @@ wss.on('connection', (ws) => {
                     gameInstance.players[0].send(JSON.stringify(gameStartMessage));
                     gameInstance.players[1].send(JSON.stringify(gameStartMessage));
 
-                    // Set up message handling for both players
+
                     handlePlayerMessages(gameInstance, 1);
                     handlePlayerMessages(gameInstance, 2);
                 } else {
@@ -68,7 +69,7 @@ wss.on('connection', (ws) => {
     // Handle disconnection
     ws.on('close', () => {
         console.log('Client disconnected');
-        // Clean up game if a player disconnects
+        // clean up game if a player disconnects
         for (const gameId in games) {
             const gameInstance = games[gameId];
             if (gameInstance.players.includes(ws)) {
@@ -77,7 +78,8 @@ wss.on('connection', (ws) => {
                         playerWs.send(JSON.stringify({ type: 'message', text: 'Your opponent has disconnected. Game over.' }));
                     }
                 });
-                delete games[gameId]; // Remove the game instance
+                // remove game instances
+                delete games[gameId]; 
                 break;
             }
         }

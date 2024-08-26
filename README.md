@@ -24,8 +24,17 @@
     <li><b>Real-Time Multiplayer:</b> Play with another player in real-time through a WebSocket server.</li>
     <li><b>Unique Grid Layout:</b> A compact 5x5 grid that demands strategic thinking and quick decision-making.</li>
     <li><b>Dynamic Piece Movement:</b> Pieces have distinct movement patterns, creating complex tactical scenarios.</li>
-    <li><b>Victory Conditions:</b> The game ends when one player captures all of the opponent's pieces or achieves the set win condition.</li>
+    <li><b>Victory Conditions:</b> The game ends when one player captures all of the opponent's pieces.</li>
 </ul>
+<!-- Deployed instruction -->
+<h2 style="font-family: 'Montserrat', sans-serif; color: #3498db; font-weight: 700; margin-top: 40px; margin-left: 50px;">
+    📦 Deployed
+</h2>
+<p style="font-family: 'Roboto', sans-serif; font-size: 16px; color: #2c3e50; line-height: 1.8; margin: 20px 70px;">
+    You can run the Deployed version using the following link(Both players need to open this link):
+        https://chess-game-fkcz.onrender.com
+    NOTE: You might need to wait for about 50s, the server has to reload due to inactivity.
+</p>
 
 <!-- Installation Instructions -->
 <h2 style="font-family: 'Montserrat', sans-serif; color: #3498db; font-weight: 700; margin-top: 40px; margin-left: 50px;">
@@ -71,7 +80,7 @@ npm start
     <li><b>Grid:</b> The game board consists of a 5x5 grid.</li>
     <li><b>Pieces:</b> Each player has several pieces, including "Pawn," "Hero1," and "Hero2," each with distinct movement abilities.</li>
     <li><b>Turns:</b> Players take turns moving one piece at a time. The current player is indicated at the bottom of the game screen.</li>
-    <li><b>Winning the Game:</b> Capture all of your opponent's pieces or achieve the specified win condition to win the game.</li>
+    <li><b>Winning the Game:</b> Capture all of your opponent's pieces.</li>
     <li><b>Movement:</b> Click on a piece to view its possible moves, highlighted on the grid. Click on a highlighted cell to move the piece.</li>
 </ul>
 

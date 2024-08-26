@@ -6,15 +6,14 @@ let gameId = null;
 
 const ws = new WebSocket('ws://localhost:8080');
 
-// Handle WebSocket connection opening
+
 ws.addEventListener('open', () => {
-    // Send a request to join or create a game with the specified game ID
     gameId = document.getElementById('game-id').value;
     ws.send(JSON.stringify({ type: 'join', gameId: gameId }));
     console.log('Connected to server, game ID:', gameId);
 });
 
-// Handle incoming WebSocket messages
+
 ws.addEventListener('message', (message) => {
     const data = JSON.parse(message.data);
 
@@ -41,13 +40,16 @@ ws.addEventListener('message', (message) => {
     }
 });
 
+//game is created here when function called
 function createGame() {
+    //game ID generation  
     gameId = Math.random().toString(36).substr(2, 9);
     document.getElementById('game-id').value = gameId;
     ws.send(JSON.stringify({ type: 'create', gameId: gameId }));
     console.log(`Game created with ID: ${gameId}`);
 }
 
+// join game called by player 2
 function joinGame() {
     gameId = document.getElementById('game-id').value;
     if (gameId) {
@@ -58,6 +60,7 @@ function joinGame() {
     }
 }
 
+//helper function for joingn
 function handleJoin(player) {
     playerNumber = player;
     if (player == 1)
@@ -92,7 +95,7 @@ function renderBoard(board, player) {
         });
     });
 
-    // Highlight possible moves if a piece is selected
+    ///for highlighting the moves
     if (selectedPiece) {
         highlightPossibleMoves(board, selectedPiece, player);
     }
@@ -123,10 +126,10 @@ function highlightPossibleMoves(board, from, player) {
     possibleMoves.forEach(({ x, y }) => {
         const cellElement = document.querySelector(`#game-board .cell:nth-child(${y * 5 + x + 1})`);
         
-        // Highlight the cell
+        //highlighting the cell
         cellElement.classList.add('highlight');
         
-        // Add the click event to make the move
+
         cellElement.addEventListener('click', () => {
             movePiece(from, { x, y });
         });
@@ -149,14 +152,14 @@ function getPossibleMoves(board, from, pieceType, player) {
             break;
         case 'Hero3':
             directions.push(
-                    { dx: 2, dy: 1 },  // FL
-                    { dx: 2, dy: -1 }, // FR
-                    { dx: -2, dy: 1 }, // BL
-                    { dx: -2, dy: -1 }, // BR
-                    { dx: 1, dy: 2 },  // RF
-                    { dx: -1, dy: 2 }, // RB
-                    { dx: 1, dy: -2 }, // LF
-                    { dx: -1, dy: -2 } // LB
+                    { dx: 2, dy: 1 },  
+                    { dx: 2, dy: -1 }, 
+                    { dx: -2, dy: 1 }, 
+                    { dx: -2, dy: -1 }, 
+                    { dx: 1, dy: 2 },  
+                    { dx: -1, dy: 2 }, 
+                    { dx: 1, dy: -2 }, 
+                    { dx: -1, dy: -2 } 
             );
             break;
     }
@@ -165,7 +168,7 @@ function getPossibleMoves(board, from, pieceType, player) {
         const newX = from.x + dx;
         const newY = from.y + dy;
 
-        // Ensure the move is within bounds and either empty or contains an opponent's piece
+        // ensure the move is within bounds and either empty or contains an opponent's piece
         if (newX >= 0 && newX < 5 && newY >= 0 && newY < 5) {
             const targetCell = board[newY][newX];
             if (!targetCell || targetCell.player !== player) {
@@ -191,5 +194,6 @@ function movePiece(from, to) {
         from: from,
         to: to
     }));
-    selectedPiece = null;  // Clear selection after the move
+    // Clear selection after the move
+    selectedPiece = null;  
 }
