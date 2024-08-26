@@ -50,11 +50,6 @@
 git clone https://github.com/satviksachan0/SatvikSachan_21BCE0423
         </pre>
     </li>
-    <li>Move to local branch
-        <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
-git checkout localDeploy
-        </pre>
-    </li>
     <li>Navigate to the project directory:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
 cd chess-game
@@ -63,6 +58,11 @@ cd chess-game
     <li>Install the required dependencies:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
 npm install
+        </pre>
+    </li>
+    <li>Move to local branch
+        <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
+git checkout localDeploy
         </pre>
     </li>
     <li>Start the server:
