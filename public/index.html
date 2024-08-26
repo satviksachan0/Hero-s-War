@@ -58,6 +58,31 @@
         margin-bottom: 20px;
         border: 1px solid #ffeeba;
       }
+      #game-setup {
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      #game-setup input[type="text"] {
+        padding: 10px;
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      #game-setup button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #1abc9c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #game-setup button:hover {
+        background-color: #16a085;
+      }
+      #player-info {
+        text-align: center;
+        margin-bottom: 20px;
+      }
     </style>
   </head>
   <body>
@@ -108,12 +133,40 @@
         the winner.
       </p>
     </div>
+
+    <!-- Game Setup -->
+    <div id="game-setup">
+      <input type="text" id="game-id" placeholder="Enter Game ID" />
+      <button onclick="createGame()">Create Game</button>
+      <button onclick="joinGame()">Join Game</button>
+    </div>
+
     <!-- Player Information -->
     <div id="player-info">
       <h3 id="player-designation">Player: Connecting...</h3>
     </div>
+
     <div id="game-board"></div>
     <div id="game-status"></div>
+
+    <script>
+      function createGame() {
+        const gameId = Math.random().toString(36).substr(2, 9);
+        document.getElementById("game-id").value = gameId;
+        // Add logic to handle game creation with this gameId
+        console.log(`Game created with ID: ${gameId}`);
+      }
+
+      function joinGame() {
+        const gameId = document.getElementById("game-id").value;
+        if (gameId) {
+          // Add logic to handle joining a game with the specified gameId
+          console.log(`Joining game with ID: ${gameId}`);
+        } else {
+          alert("Please enter a Game ID.");
+        }
+      }
+    </script>
 
     <script src="script.js"></script>
   </body>
