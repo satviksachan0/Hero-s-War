@@ -1,14 +1,20 @@
 let selectedPiece = null;
 let currentBoard = [];
 let currentPlayer = null;
+let playerNumber = null;
+let gameId = null;
 
 const ws = new WebSocket('ws://localhost:8080');
 
+// Handle WebSocket connection opening
 ws.addEventListener('open', () => {
-    ws.send(JSON.stringify({ type: 'join' }));
-    console.log('Connected to server');
+    // Send a request to join or create a game with the specified game ID
+    gameId = document.getElementById('game-id').value;
+    ws.send(JSON.stringify({ type: 'join', gameId: gameId }));
+    console.log('Connected to server, game ID:', gameId);
 });
 
+// Handle incoming WebSocket messages
 ws.addEventListener('message', (message) => {
     const data = JSON.parse(message.data);
 
@@ -35,13 +41,29 @@ ws.addEventListener('message', (message) => {
     }
 });
 
+function createGame() {
+    gameId = Math.random().toString(36).substr(2, 9);
+    document.getElementById('game-id').value = gameId;
+    ws.send(JSON.stringify({ type: 'create', gameId: gameId }));
+    console.log(`Game created with ID: ${gameId}`);
+}
+
+function joinGame() {
+    gameId = document.getElementById('game-id').value;
+    if (gameId) {
+        ws.send(JSON.stringify({ type: 'join', gameId: gameId }));
+        console.log(`Joining game with ID: ${gameId}`);
+    } else {
+        alert('Please enter a Game ID.');
+    }
+}
+
 function handleJoin(player) {
     playerNumber = player;
-    if(player==1)
+    if (player == 1)
         updateStatus2(`You are Player ${player}, BLUE`);
     else    
         updateStatus2(`You are Player ${player}, RED`);
-    // updateStatus(`You are Player ${player}`);
 }
 
 function updateGame(board, player) {
@@ -53,11 +75,10 @@ function updateGame(board, player) {
 
 function updateStatus(status) {
     document.getElementById('game-status').innerText = status;
-    // document.getElementById('player-designation').innerText=status;
 }
+
 function updateStatus2(status) {
-    // document.getElementById('game-status').innerText = status;
-    document.getElementById('player-designation').innerText=status;
+    document.getElementById('player-designation').innerText = status;
 }
 
 function renderBoard(board, player) {
@@ -83,7 +104,7 @@ function createCellElement(cell, x, y, player) {
 
     if (cell) {
         cellElement.classList.add(`player${cell.player}`);
-        cellElement.innerText = cell.piece.type;  // Extract the piece name directly
+        cellElement.innerText = cell.piece.type;
 
         if (cell.player === player) {
             cellElement.addEventListener('click', () => {
@@ -166,6 +187,7 @@ function selectPiece(x, y) {
 function movePiece(from, to) {
     ws.send(JSON.stringify({
         type: 'move',
+        gameId: gameId,
         from: from,
         to: to
     }));
