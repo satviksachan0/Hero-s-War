@@ -51,12 +51,12 @@
 <ol style="font-family: 'Roboto', sans-serif; color: #2c3e50; font-size: 16px; line-height: 1.8; margin-left: 70px;">
     <li>Clone the repository to your local machine:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
-git clone https://github.com/satviksachan0/SatvikSachan_21BCE0423
+git clone https://github.com/satviksachan0/Hero-s-War
         </pre>
     </li>
     <li>Navigate to the project directory:
         <pre style="background-color: #ecf0f1; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; margin-top: 10px;">
-cd SatvikSachan_21BCE0423
+cd Hero-s-War
         </pre>
     </li>
     <li>Install the required dependencies:
